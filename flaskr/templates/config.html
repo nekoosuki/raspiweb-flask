@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Config{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <label for='conf'>conf:{{ config['conf'] }}</label>
+        <input name='conf' id='conf' required>
+        <label for='iou'>iou:{{ config['iou'] }}</label>
+        <input name='iou' id='iou' required>
+        <input type='submit' value='set'>
+    <form>
+{% endblock %}
+
