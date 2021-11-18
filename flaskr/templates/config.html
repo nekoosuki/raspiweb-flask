@@ -1,16 +1,49 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %}Config{% endblock %}</h1>
+<h1>{% block title %}Config{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-        <label for='conf'>conf:{{ config['conf'] }}</label>
-        <input name='conf' id='conf' required>
-        <label for='iou'>iou:{{ config['iou'] }}</label>
-        <input name='iou' id='iou' required>
-        <input type='submit' value='set'>
-    <form>
-{% endblock %}
+<form id="form1" action="" method="POST">
+    <label for='conf'>conf:</label>
+    <label for='conf' id='conf_value'>loading...</label>
+    <input name='conf' id='conf' required>
+    <label for='iou'>iou:</label>
+    <label for='iou' id='iou_value'>loading...</label>
+    <input name='iou' id='iou' required>
+    <input type="button" value="set" id="submit">
+</form>
+<script src="http://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "/business/config",
+            success: (data) => {
+                $('#conf_value').text(data['conf']);
+                $('#iou_value').text(data['iou']);
+            }
+        })
+        $('#submit').click(function () {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/business/config",
+                data: $('#form1').serialize(),
+                success: (data) => {
+                    if(data['code'] == 0){
+                        $('.flash').remove();
+                        $('#conf_value').text(data['conf']);
+                        $('#iou_value').text(data['iou']);
+                    }else{
+                        location.reload();
+                    }
 
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}

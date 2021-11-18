@@ -8,7 +8,8 @@ CREATE TABLE user (
 );
 
 CREATE TABLE config(
-    devname TEXT PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    devname TEXT NOT NULL,
     conf FLOAT NULL,
     iou FLOAT NULL,
     FOREIGN KEY (devname) REFERENCES user (devname)

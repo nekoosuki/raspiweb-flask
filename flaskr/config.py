@@ -1,5 +1,3 @@
-import functools
-
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 
 from flaskr.db import get_db
@@ -10,32 +8,36 @@ import re
 
 bp = Blueprint('config', __name__)
 
-@bp.route('/', methods=('GET', 'POST'))
+@bp.route('/')
 @login_required
-def index():
+def config_interface():
+    return render_template('config.html')
+
+
+@bp.route('/business/config', methods=('GET', 'POST'))
+def config():
     db = get_db()
     if request.method == 'POST':
         conf = request.form['conf']
         iou = request.form['iou']
-        error = None
 
         if not conf or not iou:
-            error = "Input not complete"
+            #为了flash可用，出错时必须刷新页面，待优化
+            flash("Input not complete")
+            return {'code':-1}
 
         if re.search('^(0.\d+|0|1)$', str(conf)) is None or re.search('^(0.\d+|0|1)$', str(iou)) is None:
-            error = "Input decimals between 0 and 1"
+            flash("Input values between 0 and 1")
+            return {'code':-1}
 
-        if error is None:
-            try:
-                db.execute('UPDATE config SET conf = ?, iou = ? WHERE devname = ?', (conf, iou, str(g.dev['devname'])))
-                db.commit()
-            except db.IntegrityError:
-                pass
-            else:
-                error = 'update successful'
-        flash(error)
+        try:
+            db.execute('UPDATE config SET conf = ?, iou = ? WHERE devname = ?', (conf, iou, str(g.dev['devname'])))
+            db.commit()
+        except db.IntegrityError:
+            pass
     
-    config = db.execute('SELECT * FROM config WHERE devname = ?',(str(g.dev['devname']),)).fetchone()
-    return render_template('config.html',config=config)
+    config = dict(db.execute('SELECT * FROM config WHERE devname = ?',(str(g.dev['devname']),)).fetchone())
+    config['code'] = 0
+    return config
 
 
