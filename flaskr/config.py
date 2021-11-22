@@ -15,6 +15,7 @@ def config_interface():
 
 
 @bp.route('/business/config', methods=('GET', 'POST'))
+@login_required
 def config():
     db = get_db()
     if request.method == 'POST':
@@ -34,7 +35,7 @@ def config():
             db.execute('UPDATE config SET conf = ?, iou = ? WHERE devname = ?', (conf, iou, str(g.dev['devname'])))
             db.commit()
         except db.IntegrityError:
-            pass
+            db.rollback()
     
     config = dict(db.execute('SELECT * FROM config WHERE devname = ?',(str(g.dev['devname']),)).fetchone())
     config['code'] = 0

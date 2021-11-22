@@ -28,6 +28,7 @@ def register():
                 db.commit()
             except db.IntegrityError:
                 error = f'Device {devname} is already registered'
+                db.rollback()
             else:
                 return redirect(url_for('auth.login'))
         flash(error)

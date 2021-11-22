@@ -3,7 +3,8 @@ DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    devname TEXT NOT NULL,
+    -- 测试阶段发现的问题
+    devname TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
 );
 

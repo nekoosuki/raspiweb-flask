@@ -10,7 +10,7 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite')
     )
     if test_config is None:
-        app.config.from_pyfile('config.py', silent=True)
+        app.config.from_pyfile('settings.py', silent=True)
     else:
         app.config.from_mapping(test_config)
     
