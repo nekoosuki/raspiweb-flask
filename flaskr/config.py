@@ -34,8 +34,10 @@ def config():
         try:
             db.execute('UPDATE config SET conf = ?, iou = ? WHERE devname = ?', (conf, iou, str(g.dev['devname'])))
             db.commit()
-        except db.IntegrityError:
+        except db.IntegrityError: # pragma: no cover
             db.rollback()
+            flash("Unexcepted error")
+            return {'code':-2}
     
     config = dict(db.execute('SELECT * FROM config WHERE devname = ?',(str(g.dev['devname']),)).fetchone())
     config['code'] = 0
