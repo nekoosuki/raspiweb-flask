@@ -6,9 +6,11 @@ def test_register(client, app):
     assert client.get('/auth/register').status_code == 200
     response = client.post('/auth/register', data={'devname':'a', 'password':'a', 'admin':''})
     assert response.headers['Location'] == 'http://localhost/auth/login' 
-
     with app.app_context():
         assert get_db().execute('SELECT * FROM user WHERE devname = "a"').fetchone() is not None
+
+    response = client.post('/auth/register', data={'devname':'b', 'password':'b', 'admin':'neko'})
+    assert response.headers['Location'] == 'http://localhost/auth/login'
 
 @pytest.mark.parametrize(('devname', 'password', 'admin', 'message'),(
     ('','','',b'Devname is required'),
@@ -31,6 +33,17 @@ def test_login(client, auth):
         client.get('/')
         assert session['devid'] == 1
         assert g.dev['devname'] == 'test'
+    
+    auth.logout()
+    
+    respose = auth.login(devname='testadmin',password='testadmin')
+    assert respose.headers['Location'] == 'http://localhost/'
+
+    with client:
+        client.get('/')
+        assert session['devid'] == 2
+        assert g.dev['devname'] == 'testadmin'
+
 
 @pytest.mark.parametrize(('devname','password','message'),(
     ('a','test',b'Incorrect devname'),

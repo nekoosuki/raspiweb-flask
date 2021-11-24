@@ -13,9 +13,9 @@ def test_config_interface(client, auth):
     assert b'conf' in response.data
     assert b'iou' in response.data
 
-def test_auth_config(client, app, auth):
+def test_auth_config(client, app):
     response = client.post('/business/config',data={'conf':0.6,'iou':0.6})
-    assert response.status_code == 302
+    assert response.headers['Location'] == 'http://localhost/auth/login'
     with app.app_context():
         assert get_db().execute('SELECT * FROM config WHERE devname = "test"').fetchone()['conf'] is None
 
