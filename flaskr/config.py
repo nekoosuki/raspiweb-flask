@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
+from flask import Blueprint, flash, g, render_template, request
 
 from flaskr.db import get_db
 from flaskr.auth import login_required
@@ -8,13 +8,13 @@ import re
 
 bp = Blueprint('config', __name__)
 
-@bp.route('/')
+@bp.route('/',methods=['GET'])
 @login_required
 def config_interface():
     return render_template('config.html')
 
 
-@bp.route('/business/config', methods=('GET', 'POST'))
+@bp.route('/business/config', methods=['GET', 'POST'])
 @login_required
 def config():
     db = get_db()
@@ -27,7 +27,7 @@ def config():
             flash("Input not complete")
             return {'code':-1}
 
-        if re.search('^(0.\d+|0|1)$', str(conf)) is None or re.search('^(0.\d+|0|1)$', str(iou)) is None:
+        if re.search(r'^(0.\d+|0|1)$', str(conf)) is None or re.search(r'^(0.\d+|0|1)$', str(iou)) is None:
             flash("Input values between 0 and 1")
             return {'code':-1}
 

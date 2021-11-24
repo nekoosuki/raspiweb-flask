@@ -4,21 +4,21 @@ from flaskr.db import get_db
 
 def test_register(client, app):
     assert client.get('/auth/register').status_code == 200
-    response = client.post('/auth/register', data={'devname':'a', 'password':'a'})
+    response = client.post('/auth/register', data={'devname':'a', 'password':'a', 'admin':''})
     assert response.headers['Location'] == 'http://localhost/auth/login' 
 
     with app.app_context():
         assert get_db().execute('SELECT * FROM user WHERE devname = "a"').fetchone() is not None
 
-@pytest.mark.parametrize(('devname', 'password', 'message'),(
-    ('','',b'Devname is required'),
-    ('a','',b'Password is required'),
-    ('test','test',b'already registered'),
+@pytest.mark.parametrize(('devname', 'password', 'admin', 'message'),(
+    ('','','',b'Devname is required'),
+    ('a','','',b'Password is required'),
+    ('test','test','',b'already registered'),
 ))
-def test_register_validata_input(client, devname, password, message):
+def test_register_validata_input(client, devname, password, admin, message):
     response=client.post(
         '/auth/register',
-        data = {'devname':devname,'password':password},
+        data = {'devname':devname,'password':password,'admin':admin},
     )
     assert message in response.data
 

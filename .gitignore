@@ -1,0 +1,7 @@
+/instance
+/flaskr.egg-info
+*.pyc
+*/__pycache__
+.coverage
+/flaskr/setting.py
+*.ps1

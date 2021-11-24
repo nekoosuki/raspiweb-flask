@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block navbus %}
+<ul>
+    <li><span>{{ g.dev['devname'] }}</span>
+    <li><a href="{{ url_for('config') }}">return</a>
+    <li><a href="{{ url_for('auth.logout') }}">logout</a>
+</ul>
+{% endblock %}
+
+{% block header %}
+<h1>{% block title %}Admin{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>id</th>
+        <th>用户名</th>
+        <th>conf</th>
+        <th>iou</th>
+        <th>管理员</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        <td>{{ row['id'] }}</td>
+        <td>{{ row['devname'] }}</td>
+        <td>{{ row['conf'] }}</td>
+        <td>{{ row['iou'] }}</td>
+        <td>{{ row['isadmin'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

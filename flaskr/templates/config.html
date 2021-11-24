@@ -1,5 +1,18 @@
 {% extends 'base.html' %}
 
+{% block navbus %}
+<ul>
+    {% if g.dev['isadmin'] == 1 %}
+    <li><span>{{ g.dev['devname'] }}</span>
+    <li><a href="{{ url_for('admin.lookup') }}">admin</a>
+    <li><a href="{{ url_for('auth.logout') }}">logout</a>
+    {% else %}
+    <li><span>{{ g.dev['devname'] }}</span>
+    <li><a href="{{ url_for('auth.logout') }}">logout</a>
+    {% endif %}
+</ul>
+{% endblock %}
+
 {% block header %}
 <h1>{% block title %}Config{% endblock %}</h1>
 {% endblock %}
@@ -7,10 +20,10 @@
 {% block content %}
 <form id="form1" action="" method="POST">
     <label for='conf'>conf:</label>
-    <label for='conf' id='conf_value'>loading...</label>
+    <label id='conf_value'>loading...</label>
     <input name='conf' id='conf' required>
     <label for='iou'>iou:</label>
-    <label for='iou' id='iou_value'>loading...</label>
+    <label id='iou_value'>loading...</label>
     <input name='iou' id='iou' required>
     <input type="button" value="set" id="submit">
 </form>

@@ -29,7 +29,10 @@ def create_app(test_config=None):
     app.register_blueprint(config.bp)
     app.add_url_rule('/',endpoint='config')
 
-    @app.route('/hello')
+    from . import admin
+    app.register_blueprint(admin.bp)
+
+    @app.route('/hello',methods=['GET'])
     def hello():
         return 'hello,world'
     

@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% block navbus %}
+<ul>
+    <li><a href="{{ url_for('auth.register') }}">register</a>
+    <li><a href="{{ url_for('auth.login') }}">log in</a>
+</ul>
+{% endblock %}
+
 {% block header %}
     <h1>{% block title %}Log In{% endblock %}</h1>
 {% endblock %}

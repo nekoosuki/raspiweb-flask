@@ -12,15 +12,7 @@
         <h1>
             Flaskr
         </h1>
-        <ul>
-            {% if g.dev %}
-            <li><span>{{ g.dev['devname'] }}</span>
-            <li><a href="{{ url_for('auth.logout') }}">logout</a>
-                {% else %}
-            <li><a href="{{ url_for('auth.register') }}">register</a>
-            <li><a href="{{ url_for('auth.login') }}">log in</a>
-                {% endif %}
-        </ul>
+        {% block navbus %}{% endblock %}
     </nav>
     <section class="content">
         <header>

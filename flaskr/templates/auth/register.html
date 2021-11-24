@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% block navbus %}
+<ul>
+    <li><a href="{{ url_for('auth.register') }}">register</a>
+    <li><a href="{{ url_for('auth.login') }}">log in</a>
+</ul>
+{% endblock %}
+
 {% block header %}
     <h1>{% block title %}Register{% endblock %}</h1>
 {% endblock %}
@@ -10,6 +17,8 @@
         <input name='devname' id='devname' required>
         <label for='password'>password</label>
         <input type='password' name='password' id='password' required>
+        <label for='admin'>admin pass</label>
+        <input type='password' name='admin' id='admin'>
         <input type='submit' value='register'>
     <form>
 {% endblock %}
