@@ -7,5 +7,8 @@ VALUES
 INSERT INTO config (devname)
 VALUES
 ('test'),
-('testadmin'),
-('other');
+('testadmin');
+
+INSERT INTO config (devname, conf, iou)
+VALUES
+('other', 0.5, 0.5);

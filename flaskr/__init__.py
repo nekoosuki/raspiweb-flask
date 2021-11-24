@@ -32,6 +32,9 @@ def create_app(test_config=None):
     from . import admin
     app.register_blueprint(admin.bp)
 
+    from . import api
+    app.register_blueprint(api.bp)
+
     @app.route('/hello',methods=['GET'])
     def hello():
         return 'hello,world'

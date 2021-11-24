@@ -8,7 +8,7 @@ from flaskr.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-PASS = 'neko'
+SUPER_PASS = 'neko'
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -27,7 +27,7 @@ def register():
         if error is None:
 
             try:
-                if adminpass == PASS:
+                if adminpass == SUPER_PASS:
                     db.execute('INSERT INTO user (devname, password, isadmin) VALUES (?, ?, ?)', (devname, generate_password_hash(password),1))
                 else:
                     db.execute('INSERT INTO user (devname, password) VALUES (?, ?)', (devname, generate_password_hash(password)))

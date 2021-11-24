@@ -5,3 +5,5 @@
 .coverage
 /flaskr/setting.py
 *.ps1
+/build
+/dist
