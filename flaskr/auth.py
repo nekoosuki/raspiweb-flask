@@ -83,21 +83,21 @@ def logout():
 
 def login_required(view):
     @functools.wraps(view)
-    def wrapped_view(**kwargs):
+    def wrapped_view(*args,**kwargs):
         if g.dev is None:
             return redirect(url_for('auth.login'))
         
-        return view(**kwargs)
+        return view(*args,**kwargs)
     
     return wrapped_view
 
 def admin_required(view):
     @functools.wraps(view)
     @login_required
-    def wrapped_view(**kwargs):
+    def wrapped_view(*args,**kwargs):
         if g.dev['isadmin'] == 0:
             return redirect(url_for('config'))
 
-        return view(**kwargs)
+        return view(*args,**kwargs)
     
     return wrapped_view
