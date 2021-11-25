@@ -12,3 +12,13 @@ def test_admin(client, auth):
     auth.login(devname='testadmin', password='testadmin')
     response = client.get('/admin/lookup')
     assert b'other' in response.data
+
+def test_set_admin(client, auth):
+    auth.login(devname='testadmin', password='testadmin')
+    response = client.post('/admin/lookup', data={'id':1, 'isadmin':'y'})
+    assert response.status_code == 200
+    # response = client.post('/admin/lookup', data={'id':9, 'isadmin':'n'})
+    auth.logout()
+    auth.login()
+    response = client.get('/')
+    assert b'admin' in response.data

@@ -23,11 +23,28 @@
     </tr>
     {% for row in data %}
     <tr>
-        <td>{{ row['id'] }}</td>
-        <td>{{ row['devname'] }}</td>
-        <td>{{ row['conf'] }}</td>
-        <td>{{ row['iou'] }}</td>
-        <td>{{ row['isadmin'] }}</td>
+    <form method='post'>
+        <input name='id' id='id' type='hidden' value='{{ row["id"] }}'>
+        <td><label>{{ row['id'] }}</label></td>
+        <td><label'>{{ row['devname'] }}</label></td>
+        <!-- <td><input name='name' id='name' value='{{ row["devname"] }}' disabled=true></td> -->
+        <td><label>{{ row['conf'] }}</label></td>
+        <td><label>{{ row['iou'] }}</label></td>
+        {% if g.dev['id'] == row['id'] %}
+            <td><label>是</label></td>
+        {% else %}
+            <td><select name='isadmin'>
+                {% if row['isadmin'] == 0 %}
+                    <option value='y'>是</option>
+                    <option value='n' selected>否</option>
+                {% else %}
+                    <option value='y' selected>是</option>
+                    <option value='n' >否</option>
+                {% endif %}
+            </select></td>
+        {% endif %}
+        <td><input type='submit' value='submit'></td>
+    </form>
     </tr>
     {% endfor %}
 </table>
