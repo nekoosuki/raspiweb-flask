@@ -8,7 +8,7 @@ from flaskr.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-SUPER_PASS = 'neko'
+SUPER_PASS = 'pbkdf2:sha256:150000$5Cqj28Iz$f02e435ac70cbc86bd8143ea8e8f8be2c16ff630f9b0ace74fdd3885a685c4b1'
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -27,11 +27,10 @@ def register():
         if error is None:
 
             try:
-                if adminpass == SUPER_PASS:
+                if check_password_hash(SUPER_PASS,adminpass):
                     db.execute('INSERT INTO user (devname, password, isadmin) VALUES (?, ?, ?)', (devname, generate_password_hash(password),1))
                 else:
                     db.execute('INSERT INTO user (devname, password) VALUES (?, ?)', (devname, generate_password_hash(password)))
-                db.execute('INSERT INTO config (devname) VALUES (?)', (devname,))
                 db.commit()
             except db.IntegrityError:
                 error = f'Device {devname} is already registered'

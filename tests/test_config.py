@@ -17,7 +17,7 @@ def test_auth_config(client, app):
     response = client.post('/business/config',data={'conf':0.6,'iou':0.6})
     assert response.headers['Location'] == 'http://localhost/auth/login'
     with app.app_context():
-        assert get_db().execute('SELECT * FROM config WHERE devname = "test"').fetchone()['conf'] is None
+        assert get_db().execute('SELECT * FROM config WHERE id = "1"').fetchone()['conf'] is None
 
 @pytest.mark.parametrize(('conf','iou','message'),(
     (b'0.6',b'0.6',b'"conf": 0.6'),

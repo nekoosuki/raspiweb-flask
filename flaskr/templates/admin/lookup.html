@@ -14,20 +14,24 @@
 
 {% block content %}
 <table>
+    <thead>
     <tr>
+        <th>删除</th>
         <th>id</th>
         <th>用户名</th>
         <th>conf</th>
         <th>iou</th>
         <th>管理员</th>
     </tr>
+    </thead>
+    <tbody>
     {% for row in data %}
     <tr>
     <form method='post'>
         <input name='id' id='id' type='hidden' value='{{ row["id"] }}'>
+        <td><img src="{{ url_for('static', filename='bin.png')}}" id='{{ row["id"] }}' class="delete"></td>
         <td><label>{{ row['id'] }}</label></td>
-        <td><label'>{{ row['devname'] }}</label></td>
-        <!-- <td><input name='name' id='name' value='{{ row["devname"] }}' disabled=true></td> -->
+        <td><label>{{ row['devname'] }}</label></td>
         <td><label>{{ row['conf'] }}</label></td>
         <td><label>{{ row['iou'] }}</label></td>
         {% if g.dev['id'] == row['id'] %}
@@ -47,5 +51,19 @@
     </form>
     </tr>
     {% endfor %}
+    </tbody>
 </table>
+<script>
+    $('img.delete').click(function(){
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/admin/delete",
+            data: 'id='+$(this).attr('id'),
+            success: (data)=>{
+                $(this).parentsUntil('tbody').remove();
+            }
+        })
+    })
+</script>
 {% endblock %}

@@ -10,8 +10,13 @@ CREATE TABLE user (
 );
 
 CREATE TABLE config(
-    devname TEXT PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     conf FLOAT NULL,
     iou FLOAT NULL,
-    FOREIGN KEY (devname) REFERENCES user (devname)
+    FOREIGN KEY (id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE RESTRICT
 );
+
+CREATE TRIGGER auto_config AFTER INSERT ON user
+BEGIN
+    INSERT INTO config (id) VALUES (NEW.ID);
+END
