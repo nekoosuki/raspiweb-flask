@@ -1,22 +1,14 @@
-DROP TABLE IF EXISTS config;
 DROP TABLE IF EXISTS user;
+DROP INDEX IF EXISTS devname_index;
 
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    -- 测试阶段发现的问题
     devname TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    isadmin TINYINT DEFAULT 0
-);
-
-CREATE TABLE config(
-    id INTEGER PRIMARY KEY,
+    isadmin TINYINT DEFAULT 0,
     conf FLOAT NULL,
-    iou FLOAT NULL,
-    FOREIGN KEY (id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE RESTRICT
+    iou FLOAT NULL
 );
 
-CREATE TRIGGER auto_config AFTER INSERT ON user
-BEGIN
-    INSERT INTO config (id) VALUES (NEW.ID);
-END
+CREATE INDEX devname_index
+ON user(devname);

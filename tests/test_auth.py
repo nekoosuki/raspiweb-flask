@@ -7,7 +7,9 @@ def test_register(client, app):
     response = client.post('/auth/register', data={'devname':'a', 'password':'a', 'admin':''})
     assert response.headers['Location'] == 'http://localhost/auth/login' 
     with app.app_context():
-        assert get_db().execute('SELECT * FROM user WHERE devname = "a"').fetchone() is not None
+        db = get_db()
+        assert db.execute('SELECT * FROM user WHERE devname = "a"').fetchone() is not None
+        assert db.execute('SELECT conf FROM user WHERE devname="a"').fetchone() is not None
 
     response = client.post('/auth/register', data={'devname':'b', 'password':'b', 'admin':'neko'})
     assert response.headers['Location'] == 'http://localhost/auth/login'

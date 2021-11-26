@@ -17,7 +17,7 @@ def lookup():
             db.commit()
         except db.IntegrityError: # pragma: no cover
             db.rollback()
-    data = db.execute('SELECT devname,user.id,conf,iou,isadmin FROM config,user WHERE config.id = user.id').fetchall()
+    data = db.execute('SELECT id,devname,conf,iou,isadmin FROM user').fetchall()
     return render_template('admin/lookup.html', data = data)
 
 @bp.route('/delete', methods=['POST'])
@@ -26,10 +26,8 @@ def delete():
     db = get_db()
     d = request.form['id']
     try:
-        print(d)
         db.execute('DELETE FROM user WHERE id = ?', (d,))
         db.commit()
-        print('succ')
     except db.IntegrityError: # pragma: no cover
         db.rollback()
     return {'code':0}

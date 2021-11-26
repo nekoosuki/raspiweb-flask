@@ -15,7 +15,7 @@ def query_config():
 
     db = get_db()
     if check_password_hash(SUPER_PASS,p):
-        dev = db.execute('SELECT conf,iou FROM config,user WHERE devname = ? AND config.id=user.id',(devname,)).fetchone()
+        dev = db.execute('SELECT conf,iou FROM user WHERE devname = ?',(devname,)).fetchone()
         if dev is None:
             return {'code':-1}
 

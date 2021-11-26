@@ -32,14 +32,14 @@ def config():
             return {'code':-1}
 
         try:
-            db.execute('UPDATE config SET conf = ?, iou = ? WHERE id = ?', (conf, iou, str(g.dev['id'])))
+            db.execute('UPDATE user SET conf = ?, iou = ? WHERE id = ?', (conf, iou, str(g.dev['id'])))
             db.commit()
         except db.IntegrityError: # pragma: no cover
             db.rollback()
             flash("Unexcepted error")
             return {'code':-2}
     
-    config = dict(db.execute('SELECT * FROM config WHERE id = ?',(str(g.dev['id']),)).fetchone())
+    config = dict(db.execute('SELECT * FROM user WHERE id = ?',(str(g.dev['id']),)).fetchone())
     config['code'] = 0
     return config
 
