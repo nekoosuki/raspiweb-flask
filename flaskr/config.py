@@ -34,7 +34,7 @@ def config():
         try:
             db.execute('UPDATE user SET conf = ?, iou = ? WHERE id = ?', (conf, iou, str(g.dev['id'])))
             db.commit()
-        except db.IntegrityError: # pragma: no cover
+        except db.IntegrityError:
             db.rollback()
             flash("Unexcepted error")
             return {'code':-2}

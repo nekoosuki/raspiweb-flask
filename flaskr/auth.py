@@ -57,7 +57,7 @@ def login():
 
         if error is None:
             session.clear()
-            session['devid'] = dev['id']
+            session['id'] = dev['id']
             session['devname'] = devname
             return redirect(url_for('config'))
         
@@ -67,9 +67,8 @@ def login():
 
 @bp.before_app_request
 def load_logged_in_user():
-    devid = session.get('devid')
-    devname = session.get('devname')
-    if devid is None or devname is None:
+    devid = session.get('id')
+    if devid is None:
         g.dev = None
     else:
         db = get_db()

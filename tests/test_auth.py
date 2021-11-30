@@ -33,7 +33,7 @@ def test_login(client, auth):
 
     with client:
         client.get('/')
-        assert session['devid'] == 1
+        assert session['id'] == 1
         assert g.dev['devname'] == 'test'
     
     auth.logout()
@@ -43,7 +43,7 @@ def test_login(client, auth):
 
     with client:
         client.get('/')
-        assert session['devid'] == 2
+        assert session['id'] == 2
         assert g.dev['devname'] == 'testadmin'
 
 

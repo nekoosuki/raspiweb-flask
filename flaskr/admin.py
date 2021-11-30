@@ -15,7 +15,7 @@ def lookup():
         try:
             db.execute('UPDATE user SET isadmin = ? WHERE id = ?', (1 if admin == 'y' else 0, d))
             db.commit()
-        except db.IntegrityError: # pragma: no cover
+        except db.IntegrityError:
             db.rollback()
     data = db.execute('SELECT id,devname,conf,iou,isadmin FROM user').fetchall()
     return render_template('admin/lookup.html', data = data)
@@ -28,6 +28,6 @@ def delete():
     try:
         db.execute('DELETE FROM user WHERE id = ?', (d,))
         db.commit()
-    except db.IntegrityError: # pragma: no cover
+    except db.IntegrityError:
         db.rollback()
     return {'code':0}
